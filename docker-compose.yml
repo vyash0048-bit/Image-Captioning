@@ -1,0 +1,8 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      CAPTIONER_MODEL_PATH: /app/artifacts/model.pt
+      CAPTIONER_VOCAB_PATH: /app/artifacts/vocab.json
+    restart: unless-stopped
