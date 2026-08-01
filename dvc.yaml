@@ -1,0 +1,15 @@
+stages:
+  prepare:
+    cmd: captioner build-vocab --annotations data/raw/coco/annotations/captions_train2014.json
+    deps:
+      - data/raw/coco/annotations/captions_train2014.json
+    outs:
+      - artifacts/vocab.json
+  train:
+    cmd: captioner train-model --images data/raw/coco/train2014 --annotations data/raw/coco/annotations/captions_train2014.json
+    deps:
+      - data/raw/coco/train2014
+      - data/raw/coco/annotations/captions_train2014.json
+      - artifacts/vocab.json
+    outs:
+      - artifacts/model.pt
