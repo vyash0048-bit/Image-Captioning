@@ -1,0 +1,72 @@
+schema: '2.0'
+stages:
+  data_ingestion:
+    cmd: python src/ImageCaptioning/pipeline/stage_01_data_ingestion.py
+    deps:
+    - path: config/config.yaml
+      hash: md5
+      md5: bb7cb65fe7494be38382b140c633345b
+      size: 872
+    - path: src/ImageCaptioning/pipeline/stage_01_data_ingestion.py
+      hash: md5
+      md5: eaa8201594beddff7b8084531b321a35
+      size: 1084
+    outs:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 3156a32bf6452f199ac75ba97ce19eb0.dir
+      size: 1097685842
+      nfiles: 7
+  data_transformation:
+    cmd: python src/ImageCaptioning/pipeline/stage_02_data_transformation.py
+    deps:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 3156a32bf6452f199ac75ba97ce19eb0.dir
+      size: 1097685842
+      nfiles: 7
+    - path: src/ImageCaptioning/pipeline/stage_02_data_transformation.py
+      hash: md5
+      md5: dbc5b0e01320b732607c9e5767af1fa7
+      size: 2554
+    outs:
+    - path: artifacts/data_transformation/vocab.pkl
+      hash: md5
+      md5: 4f1f147970a7b34254b769502003a6bd
+      size: 204130
+  model_trainer:
+    cmd: python src/ImageCaptioning/pipeline/stage_03_model_trainer.py
+    deps:
+    - path: artifacts/data_ingestion
+      hash: md5
+      md5: 3156a32bf6452f199ac75ba97ce19eb0.dir
+      size: 1097685842
+      nfiles: 7
+    - path: artifacts/data_transformation/vocab.pkl
+      hash: md5
+      md5: 4f1f147970a7b34254b769502003a6bd
+      size: 204130
+    - path: src/ImageCaptioning/components/model.py
+      hash: md5
+      md5: a924fcde488f2ca1d3cc40329c230931
+      size: 4099
+    - path: src/ImageCaptioning/components/model_trainer.py
+      hash: md5
+      md5: 12895c79e39196b1d41d97b9b1d1c00f
+      size: 4127
+    - path: src/ImageCaptioning/pipeline/stage_03_model_trainer.py
+      hash: md5
+      md5: f361d23f30464299c23b4a721ea7f819
+      size: 1078
+    params:
+      params.yaml:
+        batch_size: 64
+        embed_size: 256
+        hidden_size: 512
+        learning_rate: 0.001
+        num_epochs: 1
+    outs:
+    - path: artifacts/model_trainer/model.pth
+      hash: md5
+      md5: 91ebc307b7f5ffa9cda9af0e2b844706
+      size: 141751027

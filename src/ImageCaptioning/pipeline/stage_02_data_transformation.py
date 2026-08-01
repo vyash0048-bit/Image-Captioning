@@ -1,3 +1,5 @@
+import os
+os.environ["NLTK_DISABLE_IMPORT_SECURITY"] = "1"
 from ImageCaptioning.config.configuration import ConfigurationManager
 from ImageCaptioning.components.vocabulary import Vocabulary
 from ImageCaptioning.components.data_loader import get_loader

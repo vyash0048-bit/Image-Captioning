@@ -1,1 +1,1 @@
-from .config_entity import DataIngestionConfig, DataTransformationConfig, ModelTrainerConfig
+from .config_entity import DataIngestionConfig, DataTransformationConfig, ModelTrainerConfig, ModelEvaluationConfig

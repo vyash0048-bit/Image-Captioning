@@ -1,6 +1,6 @@
 from ImageCaptioning.constants import *
 from ImageCaptioning.utils.common import read_yaml, create_directories
-from ImageCaptioning.entity.config_entity import DataIngestionConfig, DataTransformationConfig, ModelTrainerConfig
+from ImageCaptioning.entity.config_entity import DataIngestionConfig, DataTransformationConfig, ModelTrainerConfig, ModelEvaluationConfig
 from pathlib import Path
 
 class ConfigurationManager:
@@ -52,4 +52,16 @@ class ConfigurationManager:
             num_epochs=params.num_epochs,
             batch_size=params.batch_size,
             learning_rate=params.learning_rate
+        )
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+        create_directories([config.root_dir])
+
+        return ModelEvaluationConfig(
+            root_dir=Path(config.root_dir),
+            data_path=Path(config.data_path),
+            model_path=Path(config.model_path),
+            vocab_file=Path(config.vocab_file),
+            metrics_file=Path(config.metrics_file)
         )

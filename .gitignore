@@ -209,7 +209,7 @@ data/processed/
 artifacts/*
 !artifacts/.gitkeep
 mlruns/
-dvc.lock
+# dvc.lock
 
 # Ruff stuff:
 .ruff_cache/

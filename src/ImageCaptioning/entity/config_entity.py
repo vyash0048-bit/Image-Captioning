@@ -25,3 +25,11 @@ class ModelTrainerConfig:
     num_epochs: int
     batch_size: int
     learning_rate: float
+
+@dataclass(frozen=True)
+class ModelEvaluationConfig:
+    root_dir: Path
+    data_path: Path
+    model_path: Path
+    vocab_file: Path
+    metrics_file: Path

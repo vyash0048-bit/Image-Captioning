@@ -1,15 +1,44 @@
 stages:
-  prepare:
-    cmd: captioner build-vocab --annotations data/raw/coco/annotations/captions_train2014.json
+  data_ingestion:
+    cmd: python src/ImageCaptioning/pipeline/stage_01_data_ingestion.py
     deps:
-      - data/raw/coco/annotations/captions_train2014.json
+      - src/ImageCaptioning/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
     outs:
-      - artifacts/vocab.json
-  train:
-    cmd: captioner train-model --images data/raw/coco/train2014 --annotations data/raw/coco/annotations/captions_train2014.json
+      - artifacts/data_ingestion
+
+  data_transformation:
+    cmd: python src/ImageCaptioning/pipeline/stage_02_data_transformation.py
     deps:
-      - data/raw/coco/train2014
-      - data/raw/coco/annotations/captions_train2014.json
-      - artifacts/vocab.json
+      - src/ImageCaptioning/pipeline/stage_02_data_transformation.py
+      - artifacts/data_ingestion
     outs:
-      - artifacts/model.pt
+      - artifacts/data_transformation/vocab.pkl
+
+  model_trainer:
+    cmd: python src/ImageCaptioning/pipeline/stage_03_model_trainer.py
+    deps:
+      - src/ImageCaptioning/pipeline/stage_03_model_trainer.py
+      - src/ImageCaptioning/components/model.py
+      - src/ImageCaptioning/components/model_trainer.py
+      - artifacts/data_transformation/vocab.pkl
+      - artifacts/data_ingestion
+    params:
+      - embed_size
+      - hidden_size
+      - num_epochs
+      - batch_size
+      - learning_rate
+    outs:
+      - artifacts/model_trainer/model.pth
+
+  model_evaluation:
+    cmd: python src/ImageCaptioning/pipeline/stage_04_model_evaluation.py
+    deps:
+      - src/ImageCaptioning/pipeline/stage_04_model_evaluation.py
+      - artifacts/model_trainer/model.pth
+      - artifacts/data_transformation/vocab.pkl
+      - artifacts/data_ingestion
+    metrics:
+      - artifacts/model_evaluation/metrics.json:
+          cache: false
