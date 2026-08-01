@@ -23,6 +23,8 @@ uvicorn captioner.api:app --reload
 
 Then send an image to `POST /v1/captions` as multipart field `image`. Swagger UI is at `http://localhost:8000/docs`.
 
+For a container deployment, copy the promoted `model.pt` and `vocab.json` into `artifacts/` (or mount that directory) before calling the caption endpoint. The service starts without them, reports healthy at `/healthz`, and returns `503` from `/readyz` until its model is loaded.
+
 ## MLOps workflow
 
 1. Store data outside Git and configure a DVC remote (`dvc remote add -d storage <remote>`).

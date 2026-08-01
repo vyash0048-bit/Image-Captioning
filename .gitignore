@@ -206,7 +206,8 @@ tempCodeRunnerFile.py
 # Project artifacts and datasets
 data/raw/
 data/processed/
-artifacts/
+artifacts/*
+!artifacts/.gitkeep
 mlruns/
 dvc.lock
 
